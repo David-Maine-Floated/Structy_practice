@@ -23,7 +23,7 @@ const explore = (grid, r, c, visited) => {
   visited.add(pos)
   let count = 1
   
-  count += explore(grid, r+1, c, visited)
+  count += explore(grid, r+1, c, visited) 
   count += explore(grid, r-1, c, visited)
   count += explore(grid, r, c+1, visited)
   count += explore(grid, r, c-1, visited)
