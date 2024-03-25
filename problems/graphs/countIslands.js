@@ -109,3 +109,53 @@ const exploreIteverative = (location, visited, grid) => {
 
   return true  
 }
+
+
+const islandCount = (grid) => {
+  
+  const visited = new Set()
+  let count = 0
+  for(let r = 0; r < grid.length; r++) {
+   
+    for(let c = 0; c < grid[0].length; c++) {
+      if(explore(r,c,visited, grid)) count +=1
+    }
+  }
+  return count   
+};
+
+
+//Iterative:
+
+// const explore = (r,c, visited, grid) => {
+//   let pos = r + ',' + c
+//   if(visited.has(pos) || grid[r][c] === 'W') return false  
+  
+//   let stack = [[r,c]]
+//   let deltas = [[1,0], [-1,0], [0,1], [0, -1]]
+  
+//   while(stack.length) {
+//     let [row, col] = stack.pop()
+//     pos = row + ',' + col
+//     visited.add(pos)
+    
+//     for(let delta of deltas) {
+//         [deltaR, deltaC] = delta 
+//         let newRow = row+deltaR
+//         let newCol = col+deltaC
+//         let newPos = newRow + ',' + newCol
+//         if(!visited.has(newPos) && inbounds(grid, newRow, newCol) && grid[newRow][newCol] !== 'W') {
+//            stack.push([newRow, newCol])
+//         }
+//       }
+//     }
+  
+//   return true 
+// }
+
+
+// const inbounds = (grid, r, c) => {
+//   if(r < 0 || r >= grid.length) return false 
+//   if(c < 0 || c >= grid[0].length) return false 
+//   return true 
+// }
