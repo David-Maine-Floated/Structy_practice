@@ -1,20 +1,45 @@
+// const connectedComponentsCount = (graph) => {
+//   // todo
+//   const countSet = new Set();
+//   let count = 0;
+//   for(let node in graph) {
+//     if (explore(graph,node, countSet)) count++
+//   }
+  
+  
+//   return count 
+// };
+
+// const explore = (graph, node, countSet) => {
+//   if(countSet.has(String(node))) return false  
+//   countSet.add(String(node))
+//   for(let neighbor of graph[node]) {
+//     explore(graph, neighbor, countSet)
+//   }
+//   return true;
+// }
+
+
 const connectedComponentsCount = (graph) => {
   // todo
-  const countSet = new Set();
-  let count = 0;
+  let count = 0
+  let visited = new Set()
   for(let node in graph) {
-    if (explore(graph,node, countSet)) count++
+      if(explore(graph, node, visited) === true) {
+        count++ 
+    }
   }
-  
-  
   return count 
-};
+}
 
-const explore = (graph, node, countSet) => {
-  if(countSet.has(String(node))) return false  
-  countSet.add(String(node))
+const explore = (graph, node, visited) => {
+  console.log(visited)
+  if(visited.has(String(node))) return false    
+  visited.add(String(node)) 
+  
   for(let neighbor of graph[node]) {
-    explore(graph, neighbor, countSet)
+    explore(graph, neighbor, visited)
   }
-  return true;
+  
+  return true  
 }
