@@ -1,34 +1,67 @@
+// const islandCount = (grid) => {
+//   // todo
+//   let visited = new Set();
+//   let count = 0
+//   for(let i = 0; i < grid.length; i++) {
+//     for(let j = 0; j < grid[0].length; j++) {
+//         if (explore([i, j], visited, grid) === true) count+=1
+//     }
+//   }
+//   return count  
+// };
+
+// const explore = (location, visited, grid) => {
+//   let [x, y] = location
+//   const rowInbounds = 0 <= x && x < grid.length;
+//   const colInbounds = 0 <= y && y < grid[0].length;
+//   if (!rowInbounds || !colInbounds) return false;
+      
+//   if(grid[x][y] === 'W') return false  
+
+//   let pos = x + ',' + y
+//   if(visited.has(pos)) return false 
+//   visited.add(pos)
+  
+//   explore([x+1, y], visited, grid)
+//   explore([x-1, y], visited, grid)
+//   explore([x, y+1], visited, grid)
+//   explore([x, y-1], visited, grid)
+//   return true  
+// }
+
+
 const islandCount = (grid) => {
-  // todo
-  let visited = new Set();
+  
+  const visited = new Set()
   let count = 0
-  for(let i = 0; i < grid.length; i++) {
-    for(let j = 0; j < grid[0].length; j++) {
-        if (explore([i, j], visited, grid) === true) count+=1
+  for(let r = 0; r < grid.length; r++) {
+   
+    for(let c = 0; c < grid[0].length; c++) {
+      if(explore(r,c,visited, grid)) count +=1
     }
   }
-  return count  
+  return count   
 };
 
-const explore = (location, visited, grid) => {
-  let [x, y] = location
-  const rowInbounds = 0 <= x && x < grid.length;
-  const colInbounds = 0 <= y && y < grid[0].length;
-  if (!rowInbounds || !colInbounds) return false;
-      
-  if(grid[x][y] === 'W') return false  
-
-  let pos = x + ',' + y
-  if(visited.has(pos)) return false 
+const explore = (r,c, visited, grid) => {
+  console.log(r,c,visited)
+  let pos = r + ',' + c
+  if(visited.has(pos) || !inbounds(grid,r,c) || grid[r][c] === 'W') return false  
   visited.add(pos)
+  explore(r+1, c, visited, grid)
+  explore(r-1, c, visited, grid)
+  explore(r, c+1, visited, grid) 
+  explore(r, c-1, visited, grid) 
   
-  explore([x+1, y], visited, grid)
-  explore([x-1, y], visited, grid)
-  explore([x, y+1], visited, grid)
-  explore([x, y-1], visited, grid)
-  return true  
+  return true 
 }
 
+
+const inbounds = (grid, r, c) => {
+  if(r < 0 || r >= grid.length) return false 
+  if(c < 0 || c >= grid[0].length) return false 
+  return true 
+}
 
 
 //iterative: 
