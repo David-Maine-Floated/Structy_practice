@@ -51,3 +51,23 @@ const explore = (graph, node, visited) => {
   }
   return size 
 }
+
+
+
+//visited: 0, 8, 5  
+
+const exploreIterativley = (graph, node, visited) => {
+  
+  let stack = [node];
+  let size = 0;
+  while(stack.length) {
+    let current = stack.pop()
+    if(visited.has(current)) continue 
+    size++
+    visited.add(current) 
+      for(let neighbor of graph[current]) {
+        stack.push(neighbor)
+      }
+    }
+  return size
+}
