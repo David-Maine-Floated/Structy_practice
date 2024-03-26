@@ -66,3 +66,33 @@ const outOfBounds = (grid, r,c) => {
   if(c < 0 || c >= grid[0].length) return true 
   return false 
 }
+
+
+const exploreIteravtivley = (grid, r,c, visited) => {
+  let pos = r + ',' + c 
+  if(visited.has(pos) || grid[r][c] === 'W') return 0 
+  let stack = [[r,c]]
+  let length = 0;
+  
+  let deltas = [[1,0], [-1,0], [0,1], [0, -1]]
+  
+  while(stack.length) {
+    let [r,c] = stack.shift()
+    pos = r + ',' + c 
+    
+    if(outOfBounds(grid, r, c) || visited.has(pos)|| grid[r][c] === "W") continue 
+    
+    visited.add(pos) 
+    length += 1
+    
+    for(let delta of deltas) {
+      let [deltaR, deltaC] = delta
+      let newRow = deltaR + r; 
+      let newCol = deltaC + c;
+      stack.push([newRow, newCol])
+    
+    } 
+  }
+
+  return length  
+}
