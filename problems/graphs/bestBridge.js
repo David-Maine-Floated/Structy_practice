@@ -1,34 +1,40 @@
 const bestBridge = (grid) => {
-  let mainIsland;
+
+  let island;
   
   for(let r = 0; r < grid.length; r++) {
-    for(let c =0; c < grid[0].length; c++)
-      if(grid[r][c] === "L") {
-        mainIsland = exploreIsland(grid, r, c, new Set())
+    for(let c = 0; c < grid[0].length; c++) {
+      if(grid[r][c] === 'L') {
+        let result = exploreIsland(grid, r,c, new Set())
+        if(result.size) island = result 
+        break
       }
+    }
   }
   
-  const visited = new Set(mainIsland)
-  const queue = []
-  for(let pos of mainIsland) {
-    const [row, col] = pos.split(',').map(Number)
-    queue.push([row, col, 0])
-  
+  console.log(island)
+  let visited = new Set(island)
+  let queue = []
+  for(let pos of island) {
+    let [r,c] = pos.split(',').map(Number)
+    queue.push([r,c,0])
   }
+
+  let deltas = [[1,0], [-1,0], [0,1], [0,-1]]
   
   while(queue.length) {
-    let [r, c, count] = queue.shift()
-    const pos = r + ',' + c 
-    console.log(count)
-    if(grid[r][c] === 'L' && !mainIsland.has(pos)) return count - 1
+    let [r,c,count] = queue.shift();
+    let pos = r + ',' + c
+    console.log(grid[r][c])
+    console.log(island, pos)
+    if(!island.has(pos) && grid[r][c] === "L") return count - 1
     
-    const deltas = [[-1, 0], [1, 0], [0, -1], [0, 1]];
     for(let delta of deltas) {
-      const [deltaRow, deltaCol] = delta 
-      const newRow = r + deltaRow
-      const newCol = c + deltaCol
-      const newPos = newRow + ',' + newCol
-      if(inRange(grid, newRow, newCol) && !visited.has(newPos)) {
+      let [deltaR, deltaC] = delta;  
+      let newRow = r + deltaR;
+      let newCol = c + deltaC;
+      let newPos = newRow + ',' + newCol 
+      if(!visited.has(newPos) && inRange(grid, newRow, newCol)) {
         visited.add(newPos)
         queue.push([newRow, newCol, count + 1])
       }
@@ -37,27 +43,22 @@ const bestBridge = (grid) => {
 }
 
 
-
+const exploreIsland = (grid, r,c,island) => {
+  let pos = r + ',' + c 
+  if(island.has(pos) || !inRange(grid, r, c) || grid[r][c] === "W") return island  
+  island.add(pos)
+  
+  exploreIsland(grid, r+1, c, island)
+  exploreIsland(grid, r-1, c, island) 
+  exploreIsland(grid, r, c+1, island) 
+  exploreIsland(grid, r, c-1, island)
+  
+  return island 
+}
 
 const inRange = (grid, r, c) => {
   if(r < 0 || r >= grid.length) return false  
   if(c < 0 || c >= grid[0].length) return false 
   return true 
 
-}
-
-const exploreIsland = (grid, r, c, mainIsland) => {
-  if(!inRange(grid, r , c) || grid[r][c] === 'W') return mainIsland
-  let pos = r + ',' + c 
-  if(mainIsland.has(pos)) return mainIsland
-     
-  mainIsland.add(pos)
-    
-  exploreIsland(grid, r+1, c, mainIsland)
-  exploreIsland(grid, r-1, c, mainIsland)
-  exploreIsland(grid, r, c+1, mainIsland)
-  exploreIsland(grid, r, c-1, mainIsland)
-    
-  return mainIsland
-  
 }
