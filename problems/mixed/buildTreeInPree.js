@@ -32,3 +32,21 @@ const buildTreeInPre = (inOrder, preOrder, inStart = 0, inEnd = inOrder.length -
   );
   return root;
 };
+
+
+
+const buildTreeInPreN2 = (inOrder, preOrder) => {
+  if(inOrder.length === 0) return null
+  
+  const rootVal = preOrder[0]
+  let root = new Node(rootVal)
+  let mid = inOrder.indexOf(rootVal)
+  let inOrderLeft = inOrder.slice(0, mid)
+  let inOrderRight = inOrder.slice(mid + 1)
+  let preOrderLeft = preOrder.slice(1, inOrderLeft.length + 1)
+  let preOrderRight = preOrder.slice(inOrderLeft.length + 1)
+  root.left = buildTreeInPre(inOrderLeft, preOrderLeft)
+  root.right = buildTreeInPre(inOrderRight, preOrderRight)
+
+  return root
+};
