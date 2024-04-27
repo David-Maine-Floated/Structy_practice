@@ -1,9 +1,8 @@
 const stringSearch = (grid, s) => {
-  
+
   for(let row = 0; row < grid.length; row++) {
     for(let col = 0; col < grid[0].length; col++) {
-      let result = explore(grid, s, 0, row, col)
-      if(result) return result 
+      if(explore(grid, s, 0, row, col)) return true 
     }
   }
   return false 
@@ -13,23 +12,18 @@ const stringSearch = (grid, s) => {
 
 const explore = (grid, s, i, row, col) => {
   if(i === s.length) return true 
-  const rowInbounds = 0 <= row && row < grid.length;
-  const colInbounds = 0 <= col && col < grid[0].length;
-  if (!rowInbounds || !colInbounds) return false;
+  if(row < 0 || row >= grid.length) return false 
+  if(col < 0 || col >= grid[0].length) return false 
 
-  if(grid[row][col] !== s[i]) return false  //HIHIHIHI I shant' be moved
+  if(s[i] !== grid[row][col]) return false 
 
   const char = grid[row][col]
   grid[row][col] = '*'
-  let deltas = [[1,0], [-1, 0], [0,1], [0,-1]];
-  let finalResult = false 
-  for(let delta of deltas) {
-    const [deltaR, deltaC] = delta 
-    const newR = deltaR + row;
-    const newC = deltaC + col;
-    result = explore(grid, s, i+1, newR, newC)
-    if(result) finalResult = true 
-  }
-  grid[row][col] = char
-  return finalResult  
+  const result = explore(grid, s, i+1, row+1, col) ||
+    explore(grid, s, i+1, row-1, col) ||
+    explore(grid, s, i+1, row, col+1) ||
+    explore(grid, s, i+1, row, col-1)
+
+  grid[row][col] = char 
+  return result 
 }
