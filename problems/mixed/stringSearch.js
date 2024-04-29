@@ -8,7 +8,7 @@ const stringSearch = (grid, s) => {
   return false 
 };
 
-//o(n*m ^ n*m)
+//o(3 ^ n*m)
 
 const explore = (grid, s, i, row, col) => {
   if(i === s.length) return true 
