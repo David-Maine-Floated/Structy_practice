@@ -1,37 +1,32 @@
 const decompressBraces = (s) => {
-  // todo
   let stack = []
-  let nums = '0123456789'
-  let result = ''
+  const nums = '123456789'
 
-  for(let char of s) {
-    if(nums.includes(char)) {
-      stack.push(Number(char))
-    } else {
-      if(char === '}') {
-        let subStr = ''
-        while(typeof stack[stack.length - 1] !== "number") {
-        const popped = stack.pop()
-        subStr = popped + subStr
-        }
-        const num = stack.pop()
-        stack.push(repeat(subStr, num))
-  
-      } else if (char !== '{') {
-        stack.push(char)
+  for(let i = 0; i < s.length; i++) {
+    if(nums.includes(s[i])) {
+      stack.push(Number(s[i]))
+    } else if(s[i] === '}') {
+      let segment = ''
+      while(typeof stack[stack.length - 1] !== 'number') {
+        const popped = stack.pop();
+        segment = popped + segment;
       }
-    }
-      
+      let count = stack.pop()
+      let fullSegment = repeat(count, segment)
+      stack.push(fullSegment)
+      //
+    } else if (s[i] !== '{') {
+      stack.push(s[i])
+    }   
   }
-
- return stack.join('')
-};
-
-
-const repeat = (str, num) => {
-  let result = ""
-  for(let i = 0; i < num; i++) {
-    result += str
-  }
-  return result 
+  return stack.join('')
 }
+
+const repeat = (count, segment) => {
+  let result = '';
+  while(count > 0) {
+    result += segment;
+    count--
+  }
+  return result
+}      
