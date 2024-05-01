@@ -1,32 +1,33 @@
 const parentheticalPossibilities = (s) => {
-  if(s.length === 0) return ['']
-
-  const allPossibilities = []
+  if(s.length === 0) return [''];
   
-  let {choices, leftOver} = getChoices(s)
+  const result = []
+  
+  const {choices, remainder} = getChoices(s)
   for(let choice of choices) {
-    const remainderPossibilites = parentheticalPossibilities(leftOver)
-    for(let subString of remainderPossibilites) {
-      allPossibilities.push(choice + subString)
+    let endStringChoices = parentheticalPossibilities(remainder)
+    for(let endString of endStringChoices) {
+      result.push(choice + endString)
     }
   }
-    
-  return allPossibilities
-    
+  return result 
 };
 
 
 const getChoices = (s) => {
   if(s[0] === '(') {
     let end = s.indexOf(')')
+    const choices = s.slice(1, end);
+    const remainder = s.slice(end + 1);
     return {
-      choices: s.slice(1, end),
-      leftOver: s.slice(end + 1)
+      choices: choices,
+      remainder: remainder
     }
+    
   } else {
     return {
       choices: s[0],
-      leftOver: s.slice(1)
+      remainder: s.slice(1)
     }
   }
 }
