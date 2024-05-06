@@ -1,13 +1,16 @@
 class Node {
     constructor(val) {
-        this.val = val 
-        this.next = null
+        this.val = val;
+        this.next = null;
+        this.prev = null;
     }
 }
 
+
+
 class LinkedList {
     constructor() {
-        this.head = new Node(-1)
+        this.head = new Node(null)
         this.tail = this.head 
     }
 
@@ -15,13 +18,17 @@ class LinkedList {
      * @param {number} index
      * @return {number}
      */
+    //index = 0
+    /// head, 1, null
     get(index) {
-        let current = this.head.next
+        let current = this.head.next;
         let i = 0
         while(current) {
-            if(i === index) return current.val
+            if(i === index) {
+                return current.val
+            }
+            i++; 
             current = current.next
-            i++
         }
         return -1
     }
@@ -31,11 +38,11 @@ class LinkedList {
      * @return {void}
      */
     insertHead(val) {
-        let newHead = new Node(val)
+        const newHead = new Node(val);
         newHead.next = this.head.next 
         this.head.next = newHead
-        if(newHead.next === null) {
-            this.tail = newHead
+        if(!newHead.next) {
+            this.tail = newHead;
         }
     }
 
@@ -44,45 +51,45 @@ class LinkedList {
      * @return {void}
      */
     insertTail(val) {
-        this.tail.next = new Node(val)
-        this.tail = this.tail.next
+        const newTail = new Node(val);
+        this.tail.next = newTail;
+        this.tail = newTail
     }
 
     /**
      * @param {number} index
      * @return {boolean}
      */
-    // 0 ,   , 1  ,   2
-    // node1, node2, node3
+    // index = 1
+    // dummny, 0,    1 
+    //head, val = 2, val = 3, val = 4
     remove(index) {
+        let current = this.head
         let i = 0;
-        let curr = this.head;
-        while (i < index && curr) {
+        while(i < index && current) {
             i++;
-            curr = curr.next;
+            current = current.next;
         }
-
-        // Remove the node ahead of curr
-        if (curr && curr.next) {
-            if (curr.next === this.tail) {
-                this.tail = curr;
+        if(current && current.next) {
+            if(current.next === this.tail) {
+                this.tail = current
             }
-            curr.next = curr.next.next;
-            return true;
-        }
-        return false;
+            current.next = current.next.next
+            return true 
+        } 
+        return false 
     }
 
     /**
      * @return {number[]}
      */
     getValues() {
-        let curr = this.head.next;
-        const res = [];
-        while (curr) {
-            res.push(curr.val);
-            curr = curr.next;
+        let result = [];
+        let current = this.head.next;
+        while(current) {
+            result.push(current.val);
+            current = current.next
         }
-        return res;
+        return result
     }
 }
