@@ -2,122 +2,66 @@
  * @param {number} k
  */
 
-class Node {
-    constructor(val) {
-        this.val = val;
-        this.prev = null;
-        this.next = null;
+
+ //capacity = 3
+ //[none,none,none]
+ //head = 2
+ // 0 + 3 - 1 % 3
+class MyCircularDeque {
+    constructor(k) {
+        this.queue = new Array(k)
+        this.capacity = k
+        this.head = 0;
+        this.tail = 0;
+        this.size = 0;
     }
-}
 
-var MyCircularDeque = function(k) {
-    this.maxSize = k;
-    this.size = 0;
-    this.dummyHead = new Node(null);
-    this.tail = this.dummyHead;
-};
+    insertFront(val) {
+        if(this.isFull()) return false;
+        this.head = (this.head - 1 + this.capacity) % this.capacity;
+        this.queue[this.head] = val;
+        this.size++
+        return true 
 
-/** 
- * @param {number} value
- * @return {boolean}
- */
-MyCircularDeque.prototype.insertFront = function(value) {
-    if(this.size === this.maxSize) return false;
-
-    const newNode = new Node(value);
-    newNode.next = this.dummyHead.next;
-    newNode.prev = this.dummyHead;
-    if(this.tail === this.dummyHead) this.tail = newNode
-    this.dummyHead.next = newNode;
-    this.size += 1
-    return true   
-};
-
-/** 
- * @param {number} value
- * @return {boolean}
- */
-MyCircularDeque.prototype.insertLast = function(value) {
-    if(this.size === this.maxSize) return false;
-
-    const newNode = new Node(value);
-    this.tail.next = newNode;
-    newNode.prev = this.tail;
-    this.tail = newNode;
-    this.size += 1
-
-    return true
-};
-
-/**
- * @return {boolean}
- */
-// dummyHead, val 1, null
-MyCircularDeque.prototype.deleteFront = function() {
-
-    if(!this.dummyHead.next) return false
-    if(this.dummyHead.next.next) {
-        this.dummyHead.next.next.prev = this.dummyHead
-    } 
-    this.dummyHead.next = this.dummyHead.next.next
-    if(!this.dummyHead.next) this.tail = this.dummyHead
-
-    this.size -= 1
-    return true 
-};
-
-/**
- * @return {boolean}
- */
-
-// dummyHead, val 1, 
-
-MyCircularDeque.prototype.deleteLast = function() {
- if(this.tail === this.dummyHead) return false;
-
-    const newTail = this.tail.prev;
-    if(newTail) {
-        newTail.next = null; // Update next pointer of the new tail
-        this.tail = newTail; // Move the tail pointer
-    } else {
-        this.dummyHead.next = null; // If only one node, update dummyHead
-        this.tail = this.dummyHead;
-        this.tail.prev = null // Set tail back to dummyHead
     }
-    // if(!this.tail.prev) this.tail = this.dummyHead // Corrected
 
-    this.size -= 1;
-    return true;
-};
+    insertLast(val) {
+        if(this.isFull()) return false;
+        this.queue[this.tail] = val;
+        this.size += 1
+        this.tail = (this.tail + 1) % this.capacity;
+        return true 
+    }
 
-/**
- * @return {number}
- */
-MyCircularDeque.prototype.getFront = function() {
-    if(!this.dummyHead.next) return -1
-    return this.dummyHead.next.val;
-};
+    deleteFront() {
+        if(this.isEmpty()) return false;
+        this.head = (this.head + 1) % this.capacity;
+        this.size-- 
+        return true 
+    }
 
-/**
- * @return {number}
- */
-MyCircularDeque.prototype.getRear = function() {
-    if(this.size===0) return -1
-    return this.tail.val
-};
+    deleteLast() {
+        if(this.isEmpty()) return false;
+        this.tail = (this.tail - 1 + this.capacity) % this.capacity
+        this.size--
+        return true;
+    }
 
-/**
- * @return {boolean}
- */
-MyCircularDeque.prototype.isEmpty = function() {
-    if(this.size===0) return true 
-    return false 
-};
+    getFront() {
+        if(this.isEmpty()) return -1;
+        return this.queue[this.head]
+    }
 
-/**
- * @return {boolean}
- */
-MyCircularDeque.prototype.isFull = function() {
-    if(this.size === this.maxSize) return true 
-    return false 
+    getRear() {
+        if(this.isEmpty()) return -1;
+        return this.queue[(this.tail-1 + this.capacity )% this.capacity]  
+    }   
+
+    isEmpty() {
+        return this.size === 0
+    }
+
+    isFull() {
+        return this.size === this.capacity
+    }
 };
