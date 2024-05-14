@@ -15,3 +15,5 @@ var longestConsecutive = function(nums) {
     return longest
 
 };
+
+//its still 0(n) becuase we're only maximally iterating over the input array twice. so its techincally 0(2n) aka 0(n)
