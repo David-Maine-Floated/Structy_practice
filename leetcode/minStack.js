@@ -1,9 +1,8 @@
 class MinStack {
     constructor() {
         this.stack = [];
+        this.minStack = [];
         this.nextSlot = 0;
-        this.min = -Infinity
-        this.prevMin = -Infinity
     }
 
     /**
@@ -11,20 +10,12 @@ class MinStack {
      * @return {void}
      */
     push(val) {
-        //if stack is empty, set prev min to this new val
-        if(this.nextSlot === 0) {
-            this.prevMin = val;
-            this.min = val;
-        } else {
-            //check new val against this.min, if val is larger than first re-assign prev min
-            //to current min, then re-assign this.min to the new val
-            if(val < this.min) {
-                this.prevMin = this.min;
-                this.min = val; 
-            }
-        }
-    
         this.stack[this.nextSlot] = val;
+        if(this.nextSlot === 0) this.minStack[this.nextSlot] = val
+        else {
+           this.minStack[this.nextSlot] = Math.min(val, this.minStack[this.nextSlot - 1]);
+        }
+
         this.nextSlot++
     }
 
@@ -32,10 +23,6 @@ class MinStack {
      * @return {void}
      */
     pop() {
-        let valueToRemove = this.stack[this.nextSlot-1];
-        if(this.min === valueToRemove) {
-            this.min = this.prevMin
-        }
         this.nextSlot = this.nextSlot-1
 
     }
@@ -51,6 +38,6 @@ class MinStack {
      * @return {number}
      */
     getMin() {
-        return this.min
+        return this.minStack[this.nextSlot-1]
     }
 }
