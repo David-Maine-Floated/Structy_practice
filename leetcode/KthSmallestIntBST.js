@@ -9,30 +9,31 @@
  * }
  */
 
-// class Solution {
-//     /**
-//      * @param {TreeNode} root
-//      * @param {number} k
-//      * @return {number}
-//      */
-//     kthSmallest(root, k) {
-//       const stack = []
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @param {number} k
+     * @return {number}
+     */
+    kthSmallest(root, k) {
+        const stack = [];
+        let curr = root;
 
-//       let curr = root;
-//       while(stack.length > 0 || curr) {
-//         while (curr) {
-//             stack.push(curr)
-//             curr = curr.left
-//         }
-//         curr = stack.pop()
-//         k--
-//         if(k === 0) return curr.val
+        while (stack.length > 0 || curr !== null) {
+            while(curr) {
+                stack.push(curr);
+                curr = curr.left;
+            }
 
-//         curr = curr.right
-//       }
+            curr = stack.pop();
+            k--
+            if(k === 0) return curr.val
 
-//     }
-// }
+            curr = curr.right
+        }      
+      
+    }
+}
 
 
 //with recursion: 
