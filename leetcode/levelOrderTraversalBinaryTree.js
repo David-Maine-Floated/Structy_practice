@@ -47,30 +47,39 @@
  * }
  */
 
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
 class Solution {
     /**
      * @param {TreeNode} root
      * @return {number[][]}
      */
     levelOrder(root) {
-        const result = [];
-        const queue = [];
-        if (root) {
-            queue.push(root);
-        }
-        while(queue.length > 0) {
-            const subRow = []
-            const leng = queue.length;
+        let queue = [root];
+        let res = [];
+        while(queue.length) {
+            let row = []
+            let leng = queue.length;
             for(let i = 0; i < leng; i++) {
-                const node = queue.shift();
-                subRow.push(node.val);
-                if(node.left) queue.push(node.left)
-                if(node.right) queue.push(node.right)
-                console.log(subRow)
-            } 
-            result.push(subRow)
+                let curr = queue.shift()
+                if(curr) {
+                    row.push(curr.val)
+                    queue.push(curr.left)
+                    queue.push(curr.right)
+                }
+            }
+            if(row.length) res.push(row)
         }
-        return result
+    return res
     }
 
 }
