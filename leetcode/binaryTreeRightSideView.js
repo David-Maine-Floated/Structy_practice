@@ -14,27 +14,26 @@ class Solution {
      * @param {TreeNode} root
      * @return {number[]}
      */
-    rightSideView(root, level = 0) {
+    rightSideView(root) {
+        const queue = [root];
+        const res = []
 
-        const result = []
-        const queue = []
-        if(root) queue.push(root);
-        
         while(queue.length) {
-            let subRow = []
             let leng = queue.length;
-            // const current = queue.shift();
+            let rightSide;
             for(let i = 0; i < leng; i++) {
-                const current = queue.shift();
-                subRow.push(current.val);
-                if(current.left) queue.push(current.left)
-                if(current.right) queue.push(current.right)
-                
+                let node = queue.shift();
+                if(node) {
+                    rightSide = node;
+                    queue.push(node.left)
+                    queue.push(node.right)
+                }
             }
 
-            result.push(subRow[subRow.length - 1])
-        }
-        return result
-        
+            if(rightSide) res.push(rightSide.val)
+        } 
+
+        return res
     }
+
 }
